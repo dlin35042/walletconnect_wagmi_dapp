@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import {
   useAccount,
   useBalance,
+  useDisconnect,
   useSendTransaction,
   useWriteContract,
 } from "wagmi";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { parseEther, parseUnits } from "viem";
 
 import "./App.css";
@@ -12,6 +14,8 @@ import abi from "./abi/erc20.json";
 
 function App() {
   const { chain, address } = useAccount();
+  const { open, close } = useWeb3Modal();
+  const { disconnect } = useDisconnect();
   const { data: transactionData, sendTransaction } = useSendTransaction();
   const { writeContractAsync } = useWriteContract();
 
@@ -30,6 +34,12 @@ function App() {
   useEffect(() => {
     setTransactionId("");
   }, [selectedToken]);
+
+  useEffect(() => {
+    if (chain) {
+      console.log("chain", chain);
+    }
+  }, [chain]);
 
   const getTokenContractAddress = (token) => {
     switch (token) {
@@ -112,7 +122,11 @@ function App() {
           marginBottom: "10px",
         }}
       >
-        <w3m-button balance={"show"} />
+        {chain && (
+          <button onClick={() => open("Networks")}>{chain.name}</button>
+        )}
+        <button onClick={open}>{address ? address : "Connect"}</button>
+        {chain && <button onClick={() => disconnect()}>Disconnect</button>}
       </div>
       {chain && (
         <div style={{ marginBottom: "10px" }}>
