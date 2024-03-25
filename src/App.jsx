@@ -5,7 +5,7 @@ import {
   useSendTransaction,
   useWriteContract,
 } from "wagmi";
-import { parseEther } from "viem";
+import { parseEther, parseUnits } from "viem";
 
 import "./App.css";
 import abi from "./abi/erc20.json";
@@ -84,11 +84,13 @@ function App() {
         });
       } else {
         console.log("writeContract");
+        const amountInWei = parseUnits(amount, 6);
+
         const hash = await writeContractAsync({
           abi: abi,
           address: getTokenContractAddress(selectedToken),
           functionName: "transfer",
-          args: [to, parseEther(amount, "wei")],
+          args: [to, amountInWei],
         });
 
         if (hash) {
