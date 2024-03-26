@@ -138,45 +138,39 @@ function App() {
       {chain && (
         <>
           <div style={{ marginBottom: "10px" }}>
-            {walletClient?.sendTransaction && (
-              <button
-                style={{
-                  border:
-                    selectedToken == chain.nativeCurrency.symbol
-                      ? "1px solid blue"
-                      : "",
-                  outline: "none",
-                  margin: "0 10px",
-                }}
-                onClick={() => setSelectedToken(chain.nativeCurrency.symbol)}
-              >
-                {chain.nativeCurrency.symbol}
-              </button>
-            )}
-            {walletClient?.writeContract && (
-              <>
-                <button
-                  style={{
-                    border: selectedToken == "USDT" ? "1px solid blue" : "",
-                    outline: "none",
-                    margin: "0 10px",
-                  }}
-                  onClick={() => setSelectedToken("USDT")}
-                >
-                  USDT
-                </button>
-                <button
-                  style={{
-                    border: selectedToken == "USDC" ? "1px solid blue" : "",
-                    outline: "none",
-                    margin: "0 10px",
-                  }}
-                  onClick={() => setSelectedToken("USDC")}
-                >
-                  USDC
-                </button>
-              </>
-            )}
+            <button
+              style={{
+                border:
+                  selectedToken == chain.nativeCurrency.symbol
+                    ? "1px solid blue"
+                    : "",
+                outline: "none",
+                margin: "0 10px",
+              }}
+              onClick={() => setSelectedToken(chain.nativeCurrency.symbol)}
+            >
+              {chain.nativeCurrency.symbol}
+            </button>
+            <button
+              style={{
+                border: selectedToken == "USDT" ? "1px solid blue" : "",
+                outline: "none",
+                margin: "0 10px",
+              }}
+              onClick={() => setSelectedToken("USDT")}
+            >
+              USDT
+            </button>
+            <button
+              style={{
+                border: selectedToken == "USDC" ? "1px solid blue" : "",
+                outline: "none",
+                margin: "0 10px",
+              }}
+              onClick={() => setSelectedToken("USDC")}
+            >
+              USDC
+            </button>
           </div>
 
           {selectedToken && (
