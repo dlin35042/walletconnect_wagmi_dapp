@@ -83,7 +83,7 @@ function App() {
   });
 
   const handleSendTransaction = async () => {
-    if (amount > balance.formatted) {
+    if (parseInt(amount) > parseInt(balance.formatted)) {
       console.log("formated", balance.formatted);
       console.log("amount", amount);
 
