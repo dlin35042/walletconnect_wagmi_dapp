@@ -54,7 +54,7 @@ function App() {
           case 1: // Ethereum
             return "0xdAC17F958D2ee523a2206206994597C13D831ec7";
           case 8453: // Base.org
-            return "0x4988a896b1227218e4A688aBC12497540e5dD89e";
+            return "0xF9E36ba92f4f5E60FC0A19CCD201c285d8CCe62D";
           case 137: // Polygon
             return "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
           case 11155111: // Sepolia
