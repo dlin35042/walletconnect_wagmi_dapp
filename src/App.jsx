@@ -4,6 +4,7 @@ import {
   useBalance,
   useDisconnect,
   useSendTransaction,
+  useWalletClient,
   useWriteContract,
 } from "wagmi";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
@@ -16,6 +17,9 @@ function App() {
   const { chain, address } = useAccount();
   const { open } = useWeb3Modal();
   const { disconnect } = useDisconnect();
+  const { data: walletClient } = useWalletClient();
+  console.log("walletClient", walletClient);
+
   const { data: transactionData, sendTransaction } = useSendTransaction();
   const { writeContractAsync } = useWriteContract();
 
@@ -84,9 +88,6 @@ function App() {
 
   const handleSendTransaction = async () => {
     if (parseInt(amount) > parseInt(balance.formatted)) {
-      console.log("formated", balance.formatted);
-      console.log("amount", amount);
-
       alert("Insufficient balance");
       return;
     }
@@ -137,39 +138,45 @@ function App() {
       {chain && (
         <>
           <div style={{ marginBottom: "10px" }}>
-            <button
-              style={{
-                border:
-                  selectedToken == chain.nativeCurrency.symbol
-                    ? "1px solid blue"
-                    : "",
-                outline: "none",
-                margin: "0 10px",
-              }}
-              onClick={() => setSelectedToken(chain.nativeCurrency.symbol)}
-            >
-              {chain.nativeCurrency.symbol}
-            </button>
-            <button
-              style={{
-                border: selectedToken == "USDT" ? "1px solid blue" : "",
-                outline: "none",
-                margin: "0 10px",
-              }}
-              onClick={() => setSelectedToken("USDT")}
-            >
-              USDT
-            </button>
-            <button
-              style={{
-                border: selectedToken == "USDC" ? "1px solid blue" : "",
-                outline: "none",
-                margin: "0 10px",
-              }}
-              onClick={() => setSelectedToken("USDC")}
-            >
-              USDC
-            </button>
+            {walletClient?.sendTransaction && (
+              <button
+                style={{
+                  border:
+                    selectedToken == chain.nativeCurrency.symbol
+                      ? "1px solid blue"
+                      : "",
+                  outline: "none",
+                  margin: "0 10px",
+                }}
+                onClick={() => setSelectedToken(chain.nativeCurrency.symbol)}
+              >
+                {chain.nativeCurrency.symbol}
+              </button>
+            )}
+            {walletClient?.writeContract && (
+              <>
+                <button
+                  style={{
+                    border: selectedToken == "USDT" ? "1px solid blue" : "",
+                    outline: "none",
+                    margin: "0 10px",
+                  }}
+                  onClick={() => setSelectedToken("USDT")}
+                >
+                  USDT
+                </button>
+                <button
+                  style={{
+                    border: selectedToken == "USDC" ? "1px solid blue" : "",
+                    outline: "none",
+                    margin: "0 10px",
+                  }}
+                  onClick={() => setSelectedToken("USDC")}
+                >
+                  USDC
+                </button>
+              </>
+            )}
           </div>
 
           {selectedToken && (
