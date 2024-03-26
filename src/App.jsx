@@ -14,7 +14,7 @@ import abi from "./abi/erc20.json";
 
 function App() {
   const { chain, address } = useAccount();
-  const { open, close } = useWeb3Modal();
+  const { open } = useWeb3Modal();
   const { disconnect } = useDisconnect();
   const { data: transactionData, sendTransaction } = useSendTransaction();
   const { writeContractAsync } = useWriteContract();
@@ -42,6 +42,8 @@ function App() {
   }, [chain]);
 
   const getTokenContractAddress = (token) => {
+    if (!chain) return "";
+
     switch (token) {
       case "USDT":
         switch (chain.id) {
@@ -130,85 +132,88 @@ function App() {
         {chain && <button onClick={() => disconnect()}>Disconnect</button>}
       </div>
       {chain && (
-        <div style={{ marginBottom: "10px" }}>
-          <button
-            style={{
-              border:
-                selectedToken == chain.nativeCurrency.symbol
-                  ? "1px solid blue"
-                  : "",
-              outline: "none",
-              margin: "0 10px",
-            }}
-            onClick={() => setSelectedToken(chain.nativeCurrency.symbol)}
-          >
-            {chain.nativeCurrency.symbol}
-          </button>
-          <button
-            style={{
-              border: selectedToken == "USDT" ? "1px solid blue" : "",
-              outline: "none",
-              margin: "0 10px",
-            }}
-            onClick={() => setSelectedToken("USDT")}
-          >
-            USDT
-          </button>
-          <button
-            style={{
-              border: selectedToken == "USDC" ? "1px solid blue" : "",
-              outline: "none",
-              margin: "0 10px",
-            }}
-            onClick={() => setSelectedToken("USDC")}
-          >
-            USDC
-          </button>
-        </div>
-      )}
-      {selectedToken && (
-        <div style={{ width: "100%" }}>
-          <div>
-            <div style={{ textAlign: "right" }}>
-              <span>
-                <small>
-                  Available: &nbsp;
-                  {balance && `${balance.formatted} ${balance.symbol}`}
-                </small>
-              </span>
+        <>
+          <div style={{ marginBottom: "10px" }}>
+            <button
+              style={{
+                border:
+                  selectedToken == chain.nativeCurrency.symbol
+                    ? "1px solid blue"
+                    : "",
+                outline: "none",
+                margin: "0 10px",
+              }}
+              onClick={() => setSelectedToken(chain.nativeCurrency.symbol)}
+            >
+              {chain.nativeCurrency.symbol}
+            </button>
+            <button
+              style={{
+                border: selectedToken == "USDT" ? "1px solid blue" : "",
+                outline: "none",
+                margin: "0 10px",
+              }}
+              onClick={() => setSelectedToken("USDT")}
+            >
+              USDT
+            </button>
+            <button
+              style={{
+                border: selectedToken == "USDC" ? "1px solid blue" : "",
+                outline: "none",
+                margin: "0 10px",
+              }}
+              onClick={() => setSelectedToken("USDC")}
+            >
+              USDC
+            </button>
+          </div>
+
+          {selectedToken && (
+            <div style={{ width: "100%" }}>
+              <div>
+                <div style={{ textAlign: "right" }}>
+                  <span>
+                    <small>
+                      Available: &nbsp;
+                      {balance && `${balance.formatted} ${balance.symbol}`}
+                    </small>
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  style={{
+                    margin: "10px 0",
+                    width: "-webkit-fill-available",
+                    padding: "10px",
+                  }}
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="To"
+                  style={{
+                    margin: "10px 0",
+                    width: "-webkit-fill-available",
+                    padding: "10px",
+                  }}
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                />
+              </div>
+              <button onClick={handleSendTransaction}>Send</button>
+              {transactionId && (
+                <p>
+                  <small>Transaction ID: {transactionId}</small>
+                </p>
+              )}
             </div>
-            <input
-              type="number"
-              placeholder="Amount"
-              style={{
-                margin: "10px 0",
-                width: "-webkit-fill-available",
-                padding: "10px",
-              }}
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              placeholder="To"
-              style={{
-                margin: "10px 0",
-                width: "-webkit-fill-available",
-                padding: "10px",
-              }}
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-            />
-          </div>
-          <button onClick={handleSendTransaction}>Send</button>
-          {transactionId && (
-            <p>
-              <small>Transaction ID: {transactionId}</small>
-            </p>
           )}
-        </div>
+        </>
       )}
     </>
   );
