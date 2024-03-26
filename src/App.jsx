@@ -77,6 +77,7 @@ function App() {
   const { data: balance } = useBalance({
     address: address,
     token: getTokenContractAddress(selectedToken),
+    chainId: chain?.id,
   });
 
   const handleSendTransaction = async () => {
@@ -125,7 +126,7 @@ function App() {
         {chain && (
           <button onClick={() => open("Networks")}>{chain.name}</button>
         )}
-        <button onClick={open}>{address ? address : "Connect"}</button>
+        <button onClick={() => open()}>{address ? address : "Connect"}</button>
         {chain && <button onClick={() => disconnect()}>Disconnect</button>}
       </div>
       {chain && (
