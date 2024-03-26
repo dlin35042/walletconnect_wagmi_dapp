@@ -84,6 +84,9 @@ function App() {
 
   const handleSendTransaction = async () => {
     if (amount > balance.formatted) {
+      console.log("formated", balance.formatted);
+      console.log("amount", amount);
+
       alert("Insufficient balance");
       return;
     }
