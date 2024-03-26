@@ -83,7 +83,6 @@ function App() {
   const { data: balance } = useBalance({
     address: address,
     token: getTokenContractAddress(selectedToken),
-    chainId: chain?.id,
   });
 
   const handleSendTransaction = async () => {
