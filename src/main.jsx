@@ -1,41 +1,39 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import "./index.css";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 
 import { WagmiProvider } from "wagmi";
-import { mainnet, base, polygon, sepolia } from "wagmi/chains";
+import { mainnet, base, polygon, bsc, arbitrum } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// 0. Setup queryClient
 const queryClient = new QueryClient();
 
-// 1. Get projectId at https://cloud.walletconnect.com
-const projectId = "90673f09b630635d18af30474a16ec85";
+const projectId = "dda205841b3853ee59b0fe19f8467cfc";
 
-// 2. Create wagmiConfig
 const metadata = {
-  name: "Web3Modal",
-  description: "Web3Modal Example",
-  url: "https://web3modal.com", // origin must match your domain & subdomain
+  name: "GPO Checkout",
+  description: "GetPaidOut checkout",
+  url: "https://getpaidout.loc", // origin must match your domain & subdomain
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
-const chains = [mainnet, sepolia, base, polygon];
+const chains = [mainnet, bsc, base, polygon, arbitrum];
+
 const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
 });
 
-// 3. Create modal
 createWeb3Modal({
-  wagmiConfig: config,
-  projectId,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  enableOnramp: true, // Optional - false as default
+   wagmiConfig: config,
+   projectId,
+   enableAnalytics: true, // Optional - defaults to your Cloud configuration
+   enableOnramp: true, // Optional - false as default
+   defaultChain: mainnet,
+   themeMode: 'light'
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
